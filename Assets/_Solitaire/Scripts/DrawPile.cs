@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -30,7 +31,32 @@ public class DrawPile : MonoBehaviour
                 card.Moveable = true;
                 card.GetComponentInChildren<Renderer>().material = cardSource.materials[i + 13];
                 card.name = card.GetComponentInChildren<Renderer>().material.name;
+                cards.Add(card);
             }
+        }
+        ShuffleCards();
+    }
+    public void ShuffleCards() 
+    {
+        Shuffle(cards);
+        for(int i = 0; i < cards.Count; i++)
+        {
+            Card card = cards[i];
+            card.transform.position = i / 10f * Vector3.right + i / 10f * Vector3.forward;
+        }
+    }
+    static void Shuffle(List<Card> array)
+    {
+        int n = array.Count;
+        for (int i = 0; i < (n - 1); i++)
+        {
+            // Use Next on random instance with an argument.
+            // ... The argument is an exclusive bound.
+            //     So we will not go past the end of the array.
+            int r = i + UnityEngine.Random.Range(0, n - i);
+            Card t = array[r];
+            array[r] = array[i];
+            array[i] = t;
         }
     }
     // Start is called before the first frame update
